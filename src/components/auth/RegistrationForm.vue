@@ -12,12 +12,14 @@ import { computed } from 'vue'
 import UserForm from '@/components/auth/UserForm.vue'
 import CompanyForm from '@/components/auth/CompanyForm.vue'
 import FreelancerForm from '@/components/auth/FreelancerForm.vue'
+import VerificationForm from '@/components/auth/VerificationForm.vue'
 
 export default {
   components: {
     UserForm,
     CompanyForm,
-    FreelancerForm
+    FreelancerForm,
+    VerificationForm
   },
   setup() {
     const registerStore = useRegisterStore()
@@ -30,6 +32,8 @@ export default {
         return CompanyForm
       } else if (currentStep === 'freelancer') {
         return FreelancerForm
+      } else if (currentStep === 'verification') {
+        return VerificationForm
       }
       // Return a default component or handle invalid steps
       return UserForm
@@ -40,7 +44,7 @@ export default {
     }
 
     const prevStep = () => {
-      registerStore.goToPreviousStep()
+      registerStore.setPreviousStep()
     }
 
     return {

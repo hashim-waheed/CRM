@@ -11,8 +11,9 @@
     <button type="submit">Next</button>
   </form>
 </template>
-
 <script>
+import { useRegisterStore } from '@/stores/auth/register.js'
+
 export default {
   data() {
     return {
@@ -24,8 +25,17 @@ export default {
   },
   methods: {
     submitForm() {
+      const registerStore = useRegisterStore()
+
       if (this.userType === 'company' || this.userType === 'freelancer') {
-        this.$emit('nextStep', this.userType)
+        registerStore.setUser({
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          userType: this.userType
+        })
+        // Proceed to the next step
+        registerStore.setCurrentStep(this.userType)
       } else {
         // Handle error or validation message for userType not selected
         // Example: Show an error message or prevent form submission

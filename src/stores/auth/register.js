@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 
 export const useRegisterStore = defineStore('register', {
   state: () => ({
-    currentStep: 'user',
+    currentStep: '',
+    previousStep: '',
     user: {
       username: '',
       email: '',
@@ -20,12 +21,21 @@ export const useRegisterStore = defineStore('register', {
     freelancer: {
       freelancerName: '',
       freelancerIndustry: ''
+    },
+    verification: {
+      otp: ''
     }
   }),
   actions: {
     setCurrentStep(step) {
+      this.previousStep = this.currentStep
       this.currentStep = step
     },
+
+    setPreviousStep() {
+      this.currentStep = this.previousStep
+    },
+
     setUser(data) {
       this.user = { ...this.user, ...data }
     },
@@ -34,7 +44,11 @@ export const useRegisterStore = defineStore('register', {
     },
     setFreelancerData(data) {
       this.freelancer = { ...this.freelancer, ...data }
+    },
+    setVerificationData(data) {
+      this.verification = { ...this.verification, ...data }
     }
+
     // Additional actions to mutate the state as needed
   }
 })

@@ -6,7 +6,7 @@
       <input type="text" v-model="businessType" placeholder="Business Type" required />
       <input type="text" v-model="industry" placeholder="Industry" required />
       <input type="text" v-model="registrationNumber" placeholder="Registration Number" required />
-      <input type="text" v-model="website" placeholder="Website" required />
+      <input type="text" v-model="website" placeholder="Website" />
       <input type="file" @change="handleLogoUpload" accept="image/*" />
     </div>
     <button type="submit">Register</button>
@@ -22,21 +22,23 @@ export default {
   setup() {
     const registerStore = useRegisterStore()
 
-    const companyName = registerStore.companyName
-    const businessType = registerStore.businessType
-    const industry = registerStore.industry
-    const registrationNumber = registerStore.registrationNumber
-    const website = registerStore.website
-    const logo = registerStore.logo
+    const companyName = registerStore.company.companyName
+    const businessType = registerStore.company.businessType
+    const industry = registerStore.company.industry
+    const registrationNumber = registerStore.company.registrationNumber
+    const website = registerStore.company.website
+    const logo = registerStore.company.logo
 
     const submitForm = () => {
-      registerStore.setCompanyName(companyName)
-      registerStore.setBusinessType(businessType)
-      registerStore.setIndustry(industry)
-      registerStore.setRegistrationNumber(registrationNumber)
-      registerStore.setWebsite(website)
-      registerStore.setLogo(logo)
-      registerStore.setCurrentStep('user')
+      registerStore.setCompanyData({
+        companyName,
+        businessType,
+        industry,
+        registrationNumber,
+        website,
+        logo
+      })
+      registerStore.setCurrentStep('verification')
     }
 
     const goBack = () => {

@@ -1,11 +1,9 @@
 <template>
   <form @submit.prevent="submitForm" class="registration-form">
-    <!-- Additional fields for Freelancer -->
-    <div class="freelancer-fields">
-      <input type="text" v-model="freelancerName" placeholder="Freelancer Name" required />
-      <input type="text" v-model="freelancerIndustry" placeholder="Industry" required />
+    <div class="verification-fields">
+      <input type="text" v-model="otp" placeholder="OTP" required />
     </div>
-    <button type="submit">Register</button>
+    <button type="submit">Verify</button>
     <button type="button" @click="goBack">Back</button>
   </form>
 </template>
@@ -17,24 +15,23 @@ export default {
   setup() {
     const registerStore = useRegisterStore()
 
-    const freelancerName = registerStore.freelancer.freelancerName
-    const freelancerIndustry = registerStore.freelancer.freelancerIndustry
+    const otp = registerStore.verification.otp
 
     const submitForm = () => {
-      registerStore.setFreelancerData({
-        freelancerName,
-        freelancerIndustry
-      })
-      registerStore.setCurrentStep('verification')
+      registerStore.setVerificationData({ otp })
+      registerStore.setPreviousStep() // Set to the previous step
     }
 
     const goBack = () => {
-      registerStore.setCurrentStep('user')
+      registerStore.setPreviousStep() // Navigate back to the previous step
     }
 
+    // const goBack = () => {
+    //   registerStore.setCurrentStep('user')
+    // }
+
     return {
-      freelancerName,
-      freelancerIndustry,
+      otp,
       submitForm,
       goBack
     }
