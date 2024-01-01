@@ -17,31 +17,51 @@
 
 <script>
 import { useRegisterStore } from '@/stores/auth/register.js'
+import { ref } from 'vue'
 
 export default {
   setup() {
     const registerStore = useRegisterStore()
 
-    const companyName = registerStore.company.companyName
-    const businessType = registerStore.company.businessType
-    const industry = registerStore.company.industry
-    const registrationNumber = registerStore.company.registrationNumber
-    const website = registerStore.company.website
-    const logo = registerStore.company.logo
+    // Fetch company data from the store
+    const storedCompanyData = registerStore.company
+
+    // Initialize local data to hold form values
+    const companyName = ref(storedCompanyData.companyName || '')
+    const businessType = ref(storedCompanyData.businessType || '')
+    const industry = ref(storedCompanyData.industry || '')
+    const registrationNumber = ref(storedCompanyData.registrationNumber || '')
+    const website = ref(storedCompanyData.website || '')
+    const logo = ref(storedCompanyData.logo || '')
 
     const submitForm = () => {
-      registerStore.setCompanyData({
-        companyName,
-        businessType,
-        industry,
-        registrationNumber,
-        website,
-        logo
+      console.log('Company Data before setting:', {
+        companyName: companyName.value,
+        businessType: businessType.value,
+        industry: industry.value,
+        registrationNumber: registrationNumber.value,
+        website: website.value,
+        logo: logo.value
       })
+
+      // Store the current form values in the store
+      registerStore.setCompanyData({
+        companyName: companyName.value,
+        businessType: businessType.value,
+        industry: industry.value,
+        registrationNumber: registrationNumber.value,
+        website: website.value,
+        logo: logo.value
+      })
+
+      // Log company data after setting in the store
+      console.log('Company Data after setting:', registerStore.company)
+
       registerStore.setCurrentStep('verification')
     }
 
     const goBack = () => {
+      // Move back to the 'user' step
       registerStore.setCurrentStep('user')
     }
 
