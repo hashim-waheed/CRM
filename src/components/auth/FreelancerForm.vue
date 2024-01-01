@@ -11,20 +11,30 @@
 </template>
 
 <script>
+import { useRegisterStore } from '@/stores/auth/register.js'
+
 export default {
-  data() {
-    return {
-      freelancerName: '',
-      freelancerIndustry: ''
+  setup() {
+    const registerStore = useRegisterStore()
+
+    const freelancerName = registerStore.freelancerName
+    const freelancerIndustry = registerStore.freelancerIndustry
+
+    const submitForm = () => {
+      registerStore.setFreelancerName(freelancerName)
+      registerStore.setFreelancerIndustry(freelancerIndustry)
+      registerStore.setCurrentStep('user')
     }
-  },
-  methods: {
-    submitForm() {
-      // Validate form fields if needed before emitting the event
-      this.$emit('prevStep', 'user')
-    },
-    goBack() {
-      this.$emit('prevStep', 'user') // Emit the previous step event
+
+    const goBack = () => {
+      registerStore.setCurrentStep('user')
+    }
+
+    return {
+      freelancerName,
+      freelancerIndustry,
+      submitForm,
+      goBack
     }
   }
 }

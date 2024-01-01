@@ -13,31 +13,24 @@
 </template>
 
 <script>
-import { useRegisterStore } from '@/stores/auth/register.js'
-
 export default {
-  setup() {
-    const registerStore = useRegisterStore()
-
-    const username = registerStore.username
-    const email = registerStore.email
-    const password = registerStore.password
-    const userType = registerStore.userType
-
-    const submitForm = () => {
-      if (registerStore.userType === 'company' || registerStore.userType === 'freelancer') {
-        registerStore.setUsername(username)
-        registerStore.setEmail(email)
-        registerStore.setPassword(password)
-        registerStore.setUserType(userType)
-        registerStore.setCurrentStep(userType)
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      userType: ''
+    }
+  },
+  methods: {
+    submitForm() {
+      if (this.userType === 'company' || this.userType === 'freelancer') {
+        this.$emit('nextStep', this.userType)
       } else {
         // Handle error or validation message for userType not selected
         // Example: Show an error message or prevent form submission
       }
     }
-
-    return { username, email, password, userType, submitForm }
   }
 }
 </script>
