@@ -1,3 +1,4 @@
+
 <template>
   <form @submit.prevent="submitForm" class="registration-form">
     <!-- Additional fields for Company -->
@@ -15,33 +16,33 @@
   </form>
 </template>
 
+
 <script>
 import { useRegisterStore } from '@/stores/auth/register.js'
-import { ref } from 'vue'
+
+import { toRefs } from 'vue';
 
 export default {
   setup() {
     const registerStore = useRegisterStore()
-
-    // Fetch company data from the store
-    const storedCompanyData = registerStore.company
-
-    // Initialize local data to hold form values
-    const companyName = ref(storedCompanyData.companyName || '')
-    const businessType = ref(storedCompanyData.businessType || '')
-    const industry = ref(storedCompanyData.industry || '')
-    const registrationNumber = ref(storedCompanyData.registrationNumber || '')
-    const website = ref(storedCompanyData.website || '')
-    const logo = ref(storedCompanyData.logo || '')
+  // Destructure company data using toRefs
+  const {
+    companyName,
+    businessType,
+    industry,
+    registrationNumber,
+    website,
+    logo
+  } = toRefs(registerStore.company);
 
     const submitForm = () => {
-      console.log('Company Data before setting:', {
-        companyName: companyName.value,
-        businessType: businessType.value,
-        industry: industry.value,
-        registrationNumber: registrationNumber.value,
-        website: website.value,
-        logo: logo.value
+      registerStore.setCompanyData({
+      companyName: companyName.value,
+      businessType: businessType.value,
+      industry: industry.value,
+      registrationNumber: registrationNumber.value,
+      website: website.value,
+      logo: logo.value
       })
 
       // Store the current form values in the store
@@ -58,6 +59,10 @@ export default {
       console.log('Company Data after setting:', registerStore.company)
 
       registerStore.setCurrentStep('verification')
+      console.log('Complete Form Data:', {
+    user: { ...registerStore.user },
+    company: { ...registerStore.company }
+  });
     }
 
     const goBack = () => {
@@ -80,6 +85,7 @@ export default {
 </script>
 
 <style scoped>
+
 .registration-form {
   display: flex;
   flex-direction: column;

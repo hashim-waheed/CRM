@@ -11,6 +11,7 @@
     <button type="submit">Next</button>
   </form>
 </template>
+
 <script>
 import { ref } from 'vue'
 import { useRegisterStore } from '@/stores/auth/register.js'
