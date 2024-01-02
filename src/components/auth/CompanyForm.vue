@@ -1,38 +1,17 @@
+
 <template>
   <form @submit.prevent="submitForm" class="registration-form">
     <!-- Additional fields for Company -->
-    <div class="mb-3">
-      <label for="companyName" class="form-label">Company Name</label>
-      <input type="text" v-model="companyName" class="form-control" id="companyName" placeholder="Company Name" required />
+    <div class="company-fields">
+      <input type="text" v-model="companyName" placeholder="Company Name" required />
+      <input type="text" v-model="businessType" placeholder="Business Type" required />
+      <input type="text" v-model="industry" placeholder="Industry" required />
+      <input type="text" v-model="registrationNumber" placeholder="Registration Number" required />
+      <input type="text" v-model="website" placeholder="Website" />
+      <input type="file" @change="handleLogoUpload" accept="image/*" />
     </div>
-
-    <div class="mb-3">
-      <label for="businessType" class="form-label">Business Type</label>
-      <input type="text" v-model="businessType" class="form-control" id="businessType" placeholder="Business Type" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="industry" class="form-label">Industry</label>
-      <input type="text" v-model="industry" class="form-control" id="industry" placeholder="Industry" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="registrationNumber" class="form-label">Registration Number</label>
-      <input type="text" v-model="registrationNumber" class="form-control" id="registrationNumber" placeholder="Registration Number" required />
-    </div>
-
-    <div class="mb-3">
-      <label for="website" class="form-label">Website</label>
-      <input type="text" v-model="website" class="form-control" id="website" placeholder="Website" />
-    </div>
-
-    <div class="mb-3">
-      <label for="logo" class="form-label">Logo</label>
-      <input type="file" @change="handleLogoUpload" class="form-control" id="logo" accept="image/*" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Register</button>
-    <button type="button" @click="goBack" class="btn btn-secondary">Back</button>
+    <button type="submit">Register</button>
+    <button type="button" @click="goBack">Back</button>
     <!-- Add Back button -->
   </form>
 </template>
@@ -90,4 +69,40 @@ export default {
 </script>
 
 <style scoped>
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.registration-form input,
+.registration-form select,
+.registration-form button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.registration-form button {
+  background-color: #41b883; /* Vue official color for success */
+  color: white;
+  cursor: pointer;
+}
+
+.registration-form button:hover {
+  background-color: #3f9142; /* Slightly darker shade for hover */
+}
+
+.company-fields,
+.freelancer-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 150px;
+  /* margin:  auto; */
+}
 </style>
