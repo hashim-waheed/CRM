@@ -19,32 +19,34 @@
 
 <script>
 import { useRegisterStore } from '@/stores/auth/register.js'
-
-import { toRefs } from 'vue';
+import { ref } from 'vue'
 
 export default {
   setup() {
     const registerStore = useRegisterStore()
-  // Destructure company data using toRefs
-  const {
-    companyName,
-    businessType,
-    industry,
-    registrationNumber,
-    website,
-    logo
-  } = toRefs(registerStore.company);
+
+    // Fetch company data from the store
+    const storedCompanyData = registerStore.company
+
+    // Initialize local data to hold form values
+    const companyName = ref(storedCompanyData.companyName || '')
+    const businessType = ref(storedCompanyData.businessType || '')
+    const industry = ref(storedCompanyData.industry || '')
+    const registrationNumber = ref(storedCompanyData.registrationNumber || '')
+    const website = ref(storedCompanyData.website || '')
+    const logo = ref(storedCompanyData.logo || '')
 
     const submitForm = () => {
-      registerStore.setCompanyData({
-      companyName: companyName.value,
-      businessType: businessType.value,
-      industry: industry.value,
-      registrationNumber: registrationNumber.value,
-      website: website.value,
-      logo: logo.value
+      console.log('Company Data before setting:', {
+        companyName: companyName.value,
+        businessType: businessType.value,
+        industry: industry.value,
+        registrationNumber: registrationNumber.value,
+        website: website.value,
+        logo: logo.value
       })
 
+      // Store the current form values in the store
       registerStore.setCompanyData({
         companyName: companyName.value,
         businessType: businessType.value,
