@@ -45,7 +45,6 @@ export default {
       logo: logo.value
       })
 
-      // Store the current form values in the store
       registerStore.setCompanyData({
         companyName: companyName.value,
         businessType: businessType.value,
