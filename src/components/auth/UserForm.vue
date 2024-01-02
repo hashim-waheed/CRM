@@ -1,16 +1,94 @@
 <template>
   <form @submit.prevent="submitForm" class="registration-form">
-    <input type="text" v-model="username" placeholder="Username" required />
-    <input type="email" v-model="email" placeholder="Email" required />
-    <input type="password" v-model="password" placeholder="Password" required />
-    <select v-model="userType" required>
-      <option value="" disabled selected>Select User Type</option>
-      <option value="company">Company</option>
-      <option value="freelancer">Freelancer</option>
-    </select>
-    <button type="submit">Next</button>
+    <!-- Additional fields for Company -->
+    <div class="row">
+      <!-- First Column -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="companyName" class="form-label">Company Name</label>
+          <input
+            type="text"
+            v-model="companyName"
+            class="form-control"
+            id="companyName"
+            placeholder="Company Name"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="businessType" class="form-label">Business Type</label>
+          <input
+            type="text"
+            v-model="businessType"
+            class="form-control"
+            id="businessType"
+            placeholder="Business Type"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="industry" class="form-label">Industry</label>
+          <input
+            type="text"
+            v-model="industry"
+            class="form-control"
+            id="industry"
+            placeholder="Industry"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Second Column -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="registrationNumber" class="form-label">Registration Number</label>
+          <input
+            type="text"
+            v-model="registrationNumber"
+            class="form-control"
+            id="registrationNumber"
+            placeholder="Registration Number"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="website" class="form-label">Website</label>
+          <input
+            type="text"
+            v-model="website"
+            class="form-control"
+            id="website"
+            placeholder="Website"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="logo" class="form-label">Logo</label>
+          <input
+            type="file"
+            @change="handleLogoUpload"
+            class="form-control"
+            id="logo"
+            accept="image/*"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Full-width Column for Buttons -->
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="button" @click="goBack" class="btn btn-secondary">Back</button>
+      </div>
+    </div>
   </form>
 </template>
+
 <script>
 import { useRegisterStore } from '@/stores/auth/register.js'
 
@@ -47,26 +125,9 @@ export default {
 
 <style scoped>
 .registration-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 300px;
-  margin: 0 auto;
-}
-.registration-form input,
-.registration-form select,
-.registration-form button {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  outline: none;
-}
-.registration-form button {
-  background-color: #41b883;
-  color: white;
-  cursor: pointer;
-}
-.registration-form button:hover {
-  background-color: #3f9142;
+  background-color: aquamarine;
+  padding: 20px;
+  border-radius: 20px;
+  width: 1000px;
 }
 </style>
