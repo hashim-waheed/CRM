@@ -4,7 +4,7 @@
     <input type="email" v-model="email" placeholder="Email" required />
     <input type="password" v-model="password" placeholder="Password" required />
     <select v-model="userType" required>
-      <option value="" disabled selected>Select User Type</option>
+      <option value="" disabled>Select User Type</option>
       <option value="company">Company</option>
       <option value="freelancer">Freelancer</option>
     </select>
@@ -13,60 +13,34 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import { useRegisterStore } from '@/stores/auth/register.js'
-
 export default {
-  setup() {
-    const registerStore = useRegisterStore()
-
-    // Define reactive refs for form fields
-    const username = ref('')
-    const email = ref('')
-    const password = ref('')
-    const userType = ref('')
-
-    // If coming back from the next step, populate the form fields with the stored values
-    const storedUserData = registerStore.user
-    if (storedUserData) {
-      username.value = storedUserData.username
-      email.value = storedUserData.email
-      password.value = storedUserData.password
-      userType.value = storedUserData.userType
-    }
-
-    const submitForm = () => {
-      // console.log('User Data before setting: ', {
-      //   username: this.username,
-      //   email: this.email,
-      //   password: this.password,
-      //   userType: this.userType
-      // })
-      const formValues = {
-        username: username.value,
-        email: email.value,
-        password: password.value,
-        userType: userType.value
-      }
-
-      // Store form values locally
-      registerStore.setUser(formValues)
-      console.log('User Data after setting: ', registerStore.user)
-      // Move to the next step
-      registerStore.setCurrentStep(
-        userType.value === 'company' || userType.value === 'freelancer' ? userType.value : 'user'
-      )
-    }
-
+  data() {
     return {
-      username,
-      email,
-      password,
-      userType,
-      submitForm
-    }
-  }
-}
+      username: '',
+      email: '',
+      password: '',
+      userType: '',
+    };
+  },
+  methods: {
+    submitForm() {
+      const formValues = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        userType: this.userType,
+      };
+
+      this.$store.dispatch('setUser', formValues);
+
+      const nextStep = this.userType === 'company' || this.userType === 'freelancer'
+        ? this.userType
+        : 'user';
+
+      this.$store.dispatch('setCurrentStep', nextStep);
+    },
+  },
+};
 </script>
 
 <style scoped>

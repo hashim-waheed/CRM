@@ -11,35 +11,41 @@
 </template>
 
 <script>
-import { useRegisterStore } from '@/stores/auth/register.js'
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
-    const registerStore = useRegisterStore()
+    const store = useStore();
 
-    const freelancerName = registerStore.freelancer.freelancerName
-    const freelancerIndustry = registerStore.freelancer.freelancerIndustry
+    const freelancerName = ref(store.state.register.freelancer.freelancerName || '');
+    const freelancerIndustry = ref(store.state.register.freelancer.freelancerIndustry || '');
 
     const submitForm = () => {
-      registerStore.setFreelancerData({
-        freelancerName,
-        freelancerIndustry
-      })
-      registerStore.setCurrentStep('verification')
-    }
+      const freelancerData = {
+        freelancerName: freelancerName.value,
+        freelancerIndustry: freelancerIndustry.value,
+      };
+
+      store.dispatch('setFreelancerData', freelancerData);
+
+      store.dispatch('setCurrentStep', 'verification');
+    };
 
     const goBack = () => {
-      registerStore.setCurrentStep('user')
-    }
+      store.dispatch('setCurrentStep', 'user');
+    };
 
     return {
       freelancerName,
       freelancerIndustry,
       submitForm,
-      goBack
-    }
-  }
-}
+      goBack,
+    };
+  },
+};
+
+
 </script>
 
 <style scoped>
@@ -70,7 +76,6 @@ export default {
   background-color: #3f9142; /* Slightly darker shade for hover */
 }
 
-.company-fields,
 .freelancer-fields {
   display: flex;
   flex-direction: column;

@@ -9,34 +9,36 @@
 </template>
 
 <script>
-import { useRegisterStore } from '@/stores/auth/register.js'
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
-    const registerStore = useRegisterStore()
+    const store = useStore();
 
-    const otp = registerStore.verification.otp
+    const otp = ref(store.state.verification.otp || '');
 
     const submitForm = () => {
-      registerStore.setVerificationData({ otp })
-      registerStore.setPreviousStep() // Set to the previous step
-    }
+      const verificationData = {
+        otp: otp.value,
+      };
+
+      store.dispatch('setVerificationData', verificationData);
+
+      store.dispatch('setPreviousStep');
+    };
 
     const goBack = () => {
-      registerStore.setPreviousStep() // Navigate back to the previous step
-    }
-
-    // const goBack = () => {
-    //   registerStore.setCurrentStep('user')
-    // }
+      store.dispatch('setPreviousStep');
+    };
 
     return {
       otp,
       submitForm,
-      goBack
-    }
-  }
-}
+      goBack,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -67,12 +69,5 @@ export default {
   background-color: #3f9142; /* Slightly darker shade for hover */
 }
 
-.company-fields,
-.freelancer-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-width: 150px;
-  /* margin:  auto; */
-}
+/* You can add styles for verification-fields if needed */
 </style>

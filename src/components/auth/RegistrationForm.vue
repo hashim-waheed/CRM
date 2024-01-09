@@ -1,3 +1,4 @@
+// components/auth/RegistrationForm.vue
 <template>
   <div class="registration-form">
     <transition name="slide" mode="out-in">
@@ -7,12 +8,12 @@
 </template>
 
 <script>
-import { useRegisterStore } from '@/stores/auth/register.js'
-import { computed } from 'vue'
-import UserForm from '@/components/auth/UserForm.vue'
-import CompanyForm from '@/components/auth/CompanyForm.vue'
-import FreelancerForm from '@/components/auth/FreelancerForm.vue'
-import VerificationForm from '@/components/auth/VerificationForm.vue'
+import { computed } from 'vue';
+import { useStore } from 'vuex'; // Import the useStore hook
+import UserForm from './UserForm.vue';
+import CompanyForm from './CompanyForm.vue';
+import FreelancerForm from './FreelancerForm.vue';
+import VerificationForm from './VerificationForm.vue';
 
 export default {
   components: {
@@ -22,38 +23,37 @@ export default {
     VerificationForm
   },
   setup() {
-    const registerStore = useRegisterStore()
+    const store = useStore(); 
 
     const currentStepComponent = computed(() => {
-      const currentStep = registerStore.currentStep
+      const currentStep = store.state.currentStep; 
       if (currentStep === 'user') {
-        return UserForm
+        return UserForm;
       } else if (currentStep === 'company') {
-        return CompanyForm
+        return CompanyForm;
       } else if (currentStep === 'freelancer') {
-        return FreelancerForm
+        return FreelancerForm;
       } else if (currentStep === 'verification') {
-        return VerificationForm
+        return VerificationForm;
       }
-      // Return a default component or handle invalid steps
-      return UserForm
-    })
+      return UserForm;
+    });
 
     const nextStep = (step) => {
-      registerStore.setCurrentStep(step)
-    }
+      store.dispatch('setCurrentStep', step); 
+    };
 
     const prevStep = () => {
-      registerStore.setPreviousStep()
-    }
+      store.dispatch('setPreviousStep');
+    };
 
     return {
       currentStepComponent,
       nextStep,
       prevStep
-    }
+    };
   }
-}
+};
 </script>
 
 <style scoped>

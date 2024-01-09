@@ -1,3 +1,4 @@
+// views/Register.vue
 <template>
   <div class="register">
     <RegistrationForm />
@@ -5,13 +6,13 @@
 </template>
 
 <script>
-import RegistrationForm from '@/components/auth/RegistrationForm.vue'
+import RegistrationForm from '@/components/auth/RegistrationForm.vue'; 
 
 export default {
   components: {
     RegistrationForm
   }
-}
+};
 </script>
 
 <style>

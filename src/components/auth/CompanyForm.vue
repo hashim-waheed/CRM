@@ -1,98 +1,96 @@
-
 <template>
   <form @submit.prevent="submitForm" class="registration-form">
-    <!-- Additional fields for Company -->
-    <div class="company-fields">
-      <input type="text" v-model="companyName" placeholder="Company Name" required />
-      <input type="text" v-model="businessType" placeholder="Business Type" required />
+    <div v-if="userType === 'company'" class="company-fields">
+      <input type="text" v-model="company_name" placeholder="Company Name" required />
+      <input type="text" v-model="business_type" placeholder="Business Type" required />
       <input type="text" v-model="industry" placeholder="Industry" required />
-      <input type="text" v-model="registrationNumber" placeholder="Registration Number" required />
+      <input type="text" v-model="registration_number" placeholder="Registration Number" required />
       <input type="text" v-model="website" placeholder="Website" />
       <input type="file" @change="handleLogoUpload" accept="image/*" />
     </div>
     <button type="submit">Register</button>
     <button type="button" @click="goBack">Back</button>
-    <!-- Add Back button -->
   </form>
 </template>
 
-
 <script>
-import { useRegisterStore } from '@/stores/auth/register.js'
-import { ref } from 'vue'
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
+import RegisterService from '@/services/auth/register.js';
 
 export default {
   setup() {
-    const registerStore = useRegisterStore()
+    const store = useStore();
 
-    // Fetch company data from the store
-    const storedCompanyData = registerStore.company
+    const company_name = ref(store.state.company.company_name || '');
+    const business_type = ref(store.state.company.business_type || '');
+    const industry = ref(store.state.company.industry || '');
+    const registration_number = ref(store.state.company.registration_number || '');
+    const website = ref(store.state.company.website || '');
 
-    // Initialize local data to hold form values
-    const companyName = ref(storedCompanyData.companyName || '')
-    const businessType = ref(storedCompanyData.businessType || '')
-    const industry = ref(storedCompanyData.industry || '')
-    const registrationNumber = ref(storedCompanyData.registrationNumber || '')
-    const website = ref(storedCompanyData.website || '')
-    const logo = ref(storedCompanyData.logo || '')
+    const userType = computed(() => store.state.user.userType);
 
-    const submitForm = () => {
-      console.log('Company Data before setting:', {
-        companyName: companyName.value,
-        businessType: businessType.value,
+    const submitForm = async () => {
+      const companyData = {
+        company_name: company_name.value,
+        business_type: business_type.value,
         industry: industry.value,
-        registrationNumber: registrationNumber.value,
+        registration_number: registration_number.value,
         website: website.value,
-        logo: logo.value
-      })
+      };
 
-      // Store the current form values in the store
-      registerStore.setCompanyData({
-        companyName: companyName.value,
-        businessType: businessType.value,
-        industry: industry.value,
-        registrationNumber: registrationNumber.value,
-        website: website.value,
-        logo: logo.value
-      })
+      console.log('companyData: (form)', companyData);
 
-      // Log company data after setting in the store
-      console.log('Company Data after setting:', registerStore.company)
+      store.dispatch('setCompanyData', companyData);
 
-      registerStore.setCurrentStep('verification')
+      store.dispatch('setCurrentStep', 'verification');
+
+      const formData = {
+        ...store.state.user ,
+        ...store.state.company ,
+      }
+
       console.log('Complete Form Data:', {
-    user: { ...registerStore.user },
-    company: { ...registerStore.company }
-  });
-    }
+        formData
+      });
+
+      try {
+    const response = await RegisterService.registerUser(formData);
+    console.log('Response', response);
+  } catch (error) {
+    console.error('Error during registration:', error);
+    
+  }
+
+    };
 
     const goBack = () => {
-      // Move back to the 'user' step
-      registerStore.setCurrentStep('user')
-    }
+      store.dispatch('setCurrentStep', 'user');
+    };
 
     return {
-      companyName,
-      businessType,
+      company_name,
+      business_type,
       industry,
-      registrationNumber,
+      registration_number,
       website,
-      logo,
+      userType,
       submitForm,
-      goBack
-    }
-  }
-}
+      goBack,
+    };
+  },
+};
 </script>
 
 <style scoped>
-
 .registration-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-width: 300px;
-  margin: 0 auto;
+  margin: 0 auto; /* Center the form horizontally */
+  align-items: center; 
+  justify-content: center;
 }
 
 .registration-form input,
@@ -105,9 +103,10 @@ export default {
 }
 
 .registration-form button {
-  background-color: #41b883; /* Vue official color for success */
+  background-color: #41b883; 
   color: white;
   cursor: pointer;
+  width: 100px;
 }
 
 .registration-form button:hover {
@@ -119,7 +118,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-width: 150px;
+  max-width: 250px;
   /* margin:  auto; */
 }
+
 </style>

@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     submitForm() {
-      // Logic to handle form submission
+      
       const formData = {
         email: this.email,
         password: this.password

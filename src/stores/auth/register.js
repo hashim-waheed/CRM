@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
+import { createStore } from 'vuex';
 
-export const useRegisterStore = defineStore('register', {
+export default createStore({
   state: () => ({
     currentStep: '',
     previousStep: '',
@@ -11,10 +11,10 @@ export const useRegisterStore = defineStore('register', {
       userType: ''
     },
     company: {
-      companyName: '',
-      businessType: '',
+      company_name: '',
+      business_type: '',
       industry: '',
-      registrationNumber: '',
+      registration_number: '',
       website: '',
       logo: null
     },
@@ -26,29 +26,45 @@ export const useRegisterStore = defineStore('register', {
       otp: ''
     }
   }),
-  actions: {
-    setCurrentStep(step) {
-      this.previousStep = this.currentStep
-      this.currentStep = step
+  mutations: {
+    setCurrentStep(state, step) {
+      state.previousStep = state.currentStep;
+      state.currentStep = step;
     },
-
-    setPreviousStep() {
-      this.currentStep = this.previousStep
+    setPreviousStep(state) {
+      state.currentStep = state.previousStep;
     },
-
-    setUser(data) {
-      this.user = { ...this.user, ...data }
+    setUser(state, data) {
+      state.user = { ...state.user, ...data };
     },
-    setCompanyData(data) {
-      this.company = { ...this.company, ...data }
+    setCompanyData(state, data) {
+      state.company = { ...state.company, ...data };
     },
-    setFreelancerData(data) {
-      this.freelancer = { ...this.freelancer, ...data }
+    setFreelancerData(state, data) {
+      state.freelancer = { ...state.freelancer, ...data };
     },
-    setVerificationData(data) {
-      this.verification = { ...this.verification, ...data }
+    setVerificationData(state, data) {
+      state.verification = { ...state.verification, ...data };
     }
-
-    // Additional actions to mutate the state as needed
+  },
+  actions: {
+    setCurrentStep({ commit }, step) {
+      commit('setCurrentStep', step);
+    },
+    setPreviousStep({ commit }) {
+      commit('setPreviousStep');
+    },
+    setUser({ commit }, data) {
+      commit('setUser', data);
+    },
+    setCompanyData({ commit }, data) {
+      commit('setCompanyData', data);
+    },
+    setFreelancerData({ commit }, data) {
+      commit('setFreelancerData', data);
+    },
+    setVerificationData({ commit }, data) {
+      commit('setVerificationData', data);
+    }
   }
-})
+});
