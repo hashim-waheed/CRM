@@ -11,8 +11,8 @@
     <button type="submit">Next</button>
   </form>
 </template>
-
 <script>
+
 export default {
   data() {
     return {

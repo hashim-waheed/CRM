@@ -12,6 +12,7 @@
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 
+
 export default {
   setup() {
     const store = useStore();
@@ -24,8 +25,7 @@ export default {
       };
 
       store.dispatch('setVerificationData', verificationData);
-
-      store.dispatch('setPreviousStep');
+      store.dispatch('setCurrentStep', 'login');
     };
 
     const goBack = () => {

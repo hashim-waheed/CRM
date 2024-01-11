@@ -1,4 +1,6 @@
 import { createStore } from 'vuex';
+import register from '@/services/auth/register';
+
 
 export default createStore({
   state: () => ({
@@ -24,7 +26,11 @@ export default createStore({
     },
     verification: {
       otp: ''
-    }
+    },
+  login:{
+    email:'',
+    password:'',
+  },
   }),
   mutations: {
     setCurrentStep(state, step) {
@@ -45,6 +51,13 @@ export default createStore({
     },
     setVerificationData(state, data) {
       state.verification = { ...state.verification, ...data };
+    },
+    setLogindata(state, data){
+      state.login={...state.login, ...data}
+    },
+    setToken(state, token){
+      state.token=token;
+      localStorage.setItem('token',token)
     }
   },
   actions: {
@@ -65,6 +78,33 @@ export default createStore({
     },
     setVerificationData({ commit }, data) {
       commit('setVerificationData', data);
-    }
-  }
-});
+    },
+    setLogindata({commit}, data){
+      commit('setLogindata',data);
+    },
+
+    
+    async loginUser({ commit, state }) {
+      try {
+        const response = await register.loginUser(state.login);
+
+        const {user, token} = response.data;
+
+        commit('setUser', user);
+        commit('setToken', token);
+
+
+
+      } catch (error) {
+        console.error('Login failed:', error.message);
+        throw error; 
+      }
+    },
+  },
+  getters: {
+    isAuthenticated: (state) => state.user !== null,
+    getUser: (state) => state.user,
+    getToken:(state)=>state.token,
+  },
+}
+);

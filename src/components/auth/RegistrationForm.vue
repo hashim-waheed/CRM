@@ -14,13 +14,15 @@ import UserForm from './UserForm.vue';
 import CompanyForm from './CompanyForm.vue';
 import FreelancerForm from './FreelancerForm.vue';
 import VerificationForm from './VerificationForm.vue';
+import LoginForm from './LoginForm.vue';
 
 export default {
   components: {
     UserForm,
     CompanyForm,
     FreelancerForm,
-    VerificationForm
+    VerificationForm,
+    LoginForm
   },
   setup() {
     const store = useStore(); 
@@ -35,6 +37,9 @@ export default {
         return FreelancerForm;
       } else if (currentStep === 'verification') {
         return VerificationForm;
+      }
+      else if (currentStep === 'login'){
+        return LoginForm;
       }
       return UserForm;
     });

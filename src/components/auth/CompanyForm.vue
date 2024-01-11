@@ -40,10 +40,8 @@ export default {
       };
 
       console.log('companyData: (form)', companyData);
-
       store.dispatch('setCompanyData', companyData);
-
-      store.dispatch('setCurrentStep', 'verification');
+    store.dispatch('setCurrentStep', 'verification');
 
       const formData = {
         ...store.state.user ,

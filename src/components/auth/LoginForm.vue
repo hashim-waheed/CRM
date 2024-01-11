@@ -8,6 +8,8 @@
 </template>
 
 <script>
+
+
 export default {
   data() {
     return {
@@ -15,14 +17,29 @@ export default {
       password: ''
     }
   },
+  
   methods: {
-    submitForm() {
-      
-      const formData = {
-        email: this.email,
-        password: this.password
+    async submitForm() { 
+      const cred={
+        email:this.email,
+        password:this.password
       }
-      console.log('Form Data:', formData)
+     
+      try{
+        const response= await this.$axios.post('/login', cred);
+        const user=response.data;
+        
+      this.$store.dispatch('setUser', user);
+      alert('login done')
+      console.log(user)
+
+    }
+      catch(error){
+        console.log('login error', error)
+        alert('login error')
+
+      }
+    
     }
   }
 }

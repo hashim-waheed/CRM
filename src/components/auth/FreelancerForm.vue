@@ -18,8 +18,8 @@ export default {
   setup() {
     const store = useStore();
 
-    const freelancerName = ref(store.state.register.freelancer.freelancerName || '');
-    const freelancerIndustry = ref(store.state.register.freelancer.freelancerIndustry || '');
+    const freelancerName = ref(store.state.freelancer.freelancerName || '');
+    const freelancerIndustry = ref(store.state.freelancer.freelancerIndustry || '');
 
     const submitForm = () => {
       const freelancerData = {
