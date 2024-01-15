@@ -12,34 +12,66 @@
   </form>
 </template>
 <script>
-
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 export default {
-  data() {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      userType: '',
-    };
-  },
-  methods: {
-    submitForm() {
-      const formValues = {
-        username: this.username,
-        email: this.email,
-        password: this.password,
-        userType: this.userType,
-      };
+  setup(){
+    const store=useStore();
+    const  username=ref(store.state.user.username ||'')
+  const  email=ref(store.state.user.email ||'')
+  const  password= ref(store.state.user.password ||'')
+  const    userType=ref(store.state.user.userType ||'')
 
-      this.$store.dispatch('setUser', formValues);
+  const submitForm=async()=>{
+    const userdata={
+    username:username.value,
+    email:email.value,
+    password:password.value,
+    userType:userType.value
 
-      const nextStep = this.userType === 'company' || this.userType === 'freelancer'
-        ? this.userType
-        : 'user';
+    }
+    store.dispatch('setUser', userdata)
+     const nextStep = userType.value === 'company' || userType.value === 'freelancer'
+         ? userType.value
+         : 'user';
+         store.dispatch('setCurrentStep', nextStep)
+  }
 
-      this.$store.dispatch('setCurrentStep', nextStep);
-    },
-  },
+  return{
+    username,
+    email,
+    password,
+    userType,
+    submitForm
+  }
+
+  }
+  // data() {
+  //   return {
+  //     username: '',
+  //     email: '',
+  //     password: '',
+  //     userType: '',
+  //   };
+  // },
+  // methods: {
+  //   submitForm() {
+  //     const formValues = {
+  //       username: this.username,
+  //       email: this.email,
+  //       password: this.password,
+  //       userType: this.userType,
+  //     };
+
+  //     this.$store.dispatch('setUser', formValues);
+
+  //     const nextStep = this.userType === 'company' || this.userType === 'freelancer'
+  //       ? this.userType
+  //       : 'user';
+
+  //     this.$store.dispatch('setCurrentStep', nextStep);
+  //   },
+  // },
 };
 </script>
 

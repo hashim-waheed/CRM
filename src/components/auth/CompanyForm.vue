@@ -44,7 +44,7 @@ export default {
     store.dispatch('setCurrentStep', 'verification');
 
       const formData = {
-        ...store.state.user ,
+        ...store.state.user , 
         ...store.state.company ,
       }
 

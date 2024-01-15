@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import register from '@/services/auth/register';
-
+import axios from 'axios';
 
 export default createStore({
   state: () => ({
@@ -82,19 +82,12 @@ export default createStore({
     setLogindata({commit}, data){
       commit('setLogindata',data);
     },
-
-    
     async loginUser({ commit, state }) {
       try {
         const response = await register.loginUser(state.login);
-
         const {user, token} = response.data;
-
         commit('setUser', user);
         commit('setToken', token);
-
-
-
       } catch (error) {
         console.error('Login failed:', error.message);
         throw error; 

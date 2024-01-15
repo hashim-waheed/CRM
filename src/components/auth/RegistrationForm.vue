@@ -9,12 +9,13 @@
 
 <script>
 import { computed } from 'vue';
-import { useStore } from 'vuex'; // Import the useStore hook
+import { useStore } from 'vuex'; 
 import UserForm from './UserForm.vue';
 import CompanyForm from './CompanyForm.vue';
 import FreelancerForm from './FreelancerForm.vue';
 import VerificationForm from './VerificationForm.vue';
 import LoginForm from './LoginForm.vue';
+import CompanyComponent from '../company/CompanyComponent.vue';
 
 export default {
   components: {
@@ -22,7 +23,9 @@ export default {
     CompanyForm,
     FreelancerForm,
     VerificationForm,
-    LoginForm
+    LoginForm,
+    CompanyComponent,
+  
   },
   setup() {
     const store = useStore(); 
@@ -40,6 +43,9 @@ export default {
       }
       else if (currentStep === 'login'){
         return LoginForm;
+      }
+      else if (currentStep === 'company-component'){
+        return CompanyComponent;
       }
       return UserForm;
     });

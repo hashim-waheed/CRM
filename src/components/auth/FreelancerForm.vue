@@ -30,6 +30,8 @@ export default {
       store.dispatch('setFreelancerData', freelancerData);
 
       store.dispatch('setCurrentStep', 'verification');
+
+      console.log('Success');
     };
 
     const goBack = () => {

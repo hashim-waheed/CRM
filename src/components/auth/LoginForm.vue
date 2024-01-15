@@ -8,40 +8,78 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 
 export default {
-  data() {
-    return {
-      email: '',
-      password: ''
-    }
-  },
-  
-  methods: {
-    async submitForm() { 
-      const cred={
-        email:this.email,
-        password:this.password
-      }
-     
-      try{
-        const response= await this.$axios.post('/login', cred);
-        const user=response.data;
-        
-      this.$store.dispatch('setUser', user);
+
+setup(){
+  const store =useStore();
+  const email=ref('')
+  const password=ref('')
+  const submitForm=async ()=>{
+    const cred={
+      email:email.value,
+      password:password.value
+    };
+    try{
+      const response=await store.$axios.post('/login',cred);
+      // console.log('Response:::',response);
+      const user=response.data;
+      store.dispatch('setUser',user)
+      store.dispatch('setCurrentStep', 'verification');
       alert('login done')
       console.log(user)
-
     }
-      catch(error){
-        console.log('login error', error)
-        alert('login error')
+    catch(error){
+      if (error.response) {
 
-      }
-    
-    }
+    console.error('Server responded with:', error.response.data);
+    console.error('Status code:', error.response.status);
+    alert('Login failed. Server error.');
+  } else if (error.request) {
+    console.error('No response received from the server.');
+    alert('Login failed. No response from the server.');
+  } else {
+    console.error('Error setting up the request:', error.message);
+    alert('Login failed. Please try again.');
   }
+    }
+
+  }
+  return{
+    email, password, submitForm
+  }
+}
+
+
+
+  // data() {
+  //   return {
+  //     email: '',
+  //     password: ''
+  //   }
+  // },
+  // methods: {
+  //   async submitForm() { 
+  //     const cred={
+  //       email:this.email,
+  //       password:this.password
+  //     }
+  //     try{
+  //       const response= await this.$axios.post('/login', cred);
+  //       const user=response.data;   
+  //     this.$store.dispatch('setUser', user);
+  //     alert('login done')
+  //     console.log(user)
+  //   }
+  //     catch(error){
+  //       console.log('login error', error)
+  //       alert('login error')
+  //     }
+  //   }
+  // }
 }
 </script>
 
