@@ -1,12 +1,11 @@
-
 <template>
   <form @submit.prevent="submitForm" class="registration-form">
     <!-- Additional fields for Company -->
     <div class="company-fields">
-      <input type="text" v-model="companyName" placeholder="Company Name" required />
-      <input type="text" v-model="businessType" placeholder="Business Type" required />
+      <input type="text" v-model="company_name" placeholder="Company Name" required />
+      <input type="text" v-model="business_type" placeholder="Business Type" required />
       <input type="text" v-model="industry" placeholder="Industry" required />
-      <input type="text" v-model="registrationNumber" placeholder="Registration Number" required />
+      <input type="text" v-model="registration_number" placeholder="Registration Number" required />
       <input type="text" v-model="website" placeholder="Website" />
       <input type="file" @change="handleLogoUpload" accept="image/*" />
     </div>
@@ -16,10 +15,10 @@
   </form>
 </template>
 
-
 <script>
 import { useRegisterStore } from '@/stores/auth/register.js'
 import { ref } from 'vue'
+import axios from 'axios'
 
 export default {
   setup() {
@@ -29,42 +28,61 @@ export default {
     const storedCompanyData = registerStore.company
 
     // Initialize local data to hold form values
-    const companyName = ref(storedCompanyData.companyName || '')
-    const businessType = ref(storedCompanyData.businessType || '')
+    const company_name = ref(storedCompanyData.company_name || '')
+    const business_type = ref(storedCompanyData.business_type || '')
     const industry = ref(storedCompanyData.industry || '')
-    const registrationNumber = ref(storedCompanyData.registrationNumber || '')
+    const registration_number = ref(storedCompanyData.registration_number || '')
     const website = ref(storedCompanyData.website || '')
     const logo = ref(storedCompanyData.logo || '')
 
-    const submitForm = () => {
-      console.log('Company Data before setting:', {
-        companyName: companyName.value,
-        businessType: businessType.value,
-        industry: industry.value,
-        registrationNumber: registrationNumber.value,
-        website: website.value,
-        logo: logo.value
-      })
+    const submitForm = async () => {
+  // Convert the registration_number to a number type
+  const numericregistration_number = parseInt(registration_number.value, 10);
 
-      // Store the current form values in the store
-      registerStore.setCompanyData({
-        companyName: companyName.value,
-        businessType: businessType.value,
-        industry: industry.value,
-        registrationNumber: registrationNumber.value,
-        website: website.value,
-        logo: logo.value
-      })
-
-      // Log company data after setting in the store
-      console.log('Company Data after setting:', registerStore.company)
-
-      registerStore.setCurrentStep('verification')
-      console.log('Complete Form Data:', {
-    user: { ...registerStore.user },
-    company: { ...registerStore.company }
+  console.log('Company Data before setting:', {
+    company_name: company_name.value,
+    business_type: business_type.value,
+    industry: industry.value,
+    registration_number: numericregistration_number,  // Use the numeric value
+    website: website.value,
+    logo: logo.value
   });
-    }
+
+  // Store the current form values in the store
+  registerStore.setCompanyData({
+    company_name: company_name.value,
+    business_type: business_type.value,
+    industry: industry.value,
+    registration_number: numericregistration_number,  // Use the numeric value
+    website: website.value,
+    logo: logo.value
+  });
+
+  // Log company data after setting in the store
+  console.log('Company Data after setting:', registerStore.company);
+
+  registerStore.setCurrentStep('verification');
+
+  const formData = {
+    ...registerStore.user,
+    ...registerStore.company
+  };
+
+  console.log('Complete Form Data:', {
+    formData
+  });
+
+  try {
+    const response = await axios.post('http://192.168.88.13:8000/api/register', formData);
+
+    console.log('API Response:', response.data);
+  } catch (error) {
+    console.error('API Error:', error.response.data);
+  }
+
+  registerStore.setCurrentStep('verification');
+};
+
 
     const goBack = () => {
       // Move back to the 'user' step
@@ -72,10 +90,10 @@ export default {
     }
 
     return {
-      companyName,
-      businessType,
+      company_name,
+      business_type,
       industry,
-      registrationNumber,
+      registration_number,
       website,
       logo,
       submitForm,
@@ -86,7 +104,6 @@ export default {
 </script>
 
 <style scoped>
-
 .registration-form {
   display: flex;
   flex-direction: column;

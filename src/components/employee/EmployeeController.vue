@@ -1,6 +1,9 @@
 <template>
     <main>
-  <h2>Employees</h2>
+      <div class="container">
+      <h2>Employees</h2>
+      <button class="btn btn-primary">Add Employee</button>
+    </div>
 
   <table table table-striped>
     <thead>
@@ -19,10 +22,11 @@
           <td>test@gmail.com</td>
           <td>Front-End</td>
           <td>
-              <button type="button" class="btn btn-danger">Delete</button>
-              <button type="button" class="btn btn-light">Update</button>
+            <button type="button" class="btn btn-secondary">Update</button>
+            <button type="button" class="btn btn-danger">Delete</button>
           </td>
       </tr>
+      
     </tbody>
   </table>
 </main>
@@ -96,9 +100,14 @@ input, button {
 }
 
 button {
-  background-color: #333;
+ 
   color: white;
   border: none;
   cursor: pointer;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

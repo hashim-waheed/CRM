@@ -7,6 +7,7 @@
   <nav>
  <router-link to="/company-dashboard/company-departments">Departments</router-link>
  <router-link to="/company-dashboard/employees">Employees</router-link>
+
   </nav>
 
   <router-view></router-view>

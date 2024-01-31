@@ -35,6 +35,7 @@ const router = createRouter({
       children:[
         {
           path:'',
+          name:'Company',
           component:Company
         },
         {
@@ -55,6 +56,7 @@ const router = createRouter({
       children: [
         {
           path: '', // Empty path for default child route
+          name:'Department',
           component: Department
         },
         {

@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import axios from 'axios'
 
 export const useRegisterStore = defineStore('register', {
   state: () => ({
@@ -11,10 +12,10 @@ export const useRegisterStore = defineStore('register', {
       userType: ''
     },
     company: {
-      companyName: '',
-      businessType: '',
+      company_name: '',
+      business_type: '',
       industry: '',
-      registrationNumber: '',
+      registration_number: '',
       website: '',
       logo: null
     },
@@ -52,3 +53,20 @@ export const useRegisterStore = defineStore('register', {
     // Additional actions to mutate the state as needed
   }
 })
+
+
+export const useDepartmentStore = defineStore('department', {
+  state: () => ({
+    departments: [],
+  }),
+  actions: {
+    async fetchDepartments() {
+      try {
+        const response = await axios.get('http://your-api-url/departments');
+        this.departments = response.data;
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+      }
+    },
+  },
+});
